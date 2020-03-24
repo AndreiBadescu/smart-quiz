@@ -1,22 +1,5 @@
 console.log("Loading...")
-/*
-FBInstant.initializeAsync()
-    .then(function() {
-        var progress = 0;
-        var interval = setInterval(function() {
-            if (progress >= 100) {
-                clearInterval(interval);
-                FBInstant.startGameAsync().then(
-                    function() {
-                        console.log("Games has been started")
-                    }
-                )
-            }
-            FBInstant.setLoadingProgress(progress);
-            progress += 10;
-        }, 100)
-    });
-*/
+
 var question = document.getElementById("question");
 var obj; // = questions[index]
 var index; // the question's number
