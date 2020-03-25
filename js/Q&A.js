@@ -1,31 +1,31 @@
 questions = [
 	{
-	question: "Cum te cheama ?",
+	question: "Care este capitala tarii Tuvalu ?",
 	answers: [
-	    "Andrei",
-	    "Ian",
-	    "Azteca",
-	    "Nane"
+	    "Funafuti",
+	    "Futefuti",
+	    "Fugifa",
+	    "Funiefufa"
 	],
 	key: 0
 	},
 	{
-	question: "Ce varsta ai?",
+	question: "Care este cel mai puternic drog din cele de mai jos ?",
 	answers: [
-	    "17",
-	    "18",
-	    "19",
-	    "20"
+	    "AlaCool",
+	    "Ca-n Abis",
+	    "CoFaina",
+	    "LeeSeTe"
 	],
-	key: 1
+	key: 3
 	},
 	{
-	question: "De unde esti ?",
+	question: "Care este numele virusului care a produs pandemia din 2020 ?",
 	answers: [
-	    "9 mai",
-	    "Gorj",
-	    "Ankara",
-	    "Lisabona"
+	    "Covid-19",
+	    "Sars-Cov-2",
+	    "Coronavirus",
+	    "A"
 	],
 	key: 1
 	}
