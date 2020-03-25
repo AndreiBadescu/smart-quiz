@@ -81,8 +81,8 @@ function checkAns(event) {
             /// 0.5s when the greyFilter transition ends
             setTimeout(function() {
                 gameWindow.className = "blur-filter"; // blur the screen
-            }, 501);
-            
+            }, 501); 
+
             showMenu(wrongChoice, correctChoice);
         }
         setTimeout(next, 800, event.currentTarget, option[ans]);
@@ -131,16 +131,13 @@ function playerGuess(index) {
 }
 
 function showMenu(wrongChoice, correctChoice) {
-    var retryMenu = document.createElement('div');
-    retryMenu.id = "retry_menu";
+    var retryMenu = document.getElementById('retry_menu');
     retryMenu.className = "centered";
-
-    gameWindow.appendChild(retryMenu);
 
     retryMenu.addEventListener("click", function () {
         wrongChoice.className = "hover";
         correctChoice.className = "hover";
-        retryMenu.remove();
+        retryMenu.className = "hidden";
         resetGame();
     });
 }
