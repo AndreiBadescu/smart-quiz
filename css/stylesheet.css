@@ -3,22 +3,32 @@ html, body {
     margin: 0;
 }
 
+html {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     background: rgb(251, 151, 8);
     background: linear-gradient(90deg, rgba(251, 151, 8, 1) 0%, rgba(252, 177, 48, 1) 41%, rgba(0, 151, 181, 1) 100%);
 }
 
 button {
-    border: 4px solid black;
-    border-radius: 22px;
-    font-size: 3em;
-    width: 8em;
-    padding: 0.5em;
-    margin: 0.3em;
+    border: 0.25rem solid black;
+    border-radius: 1.375rem;
+    font-size: 3rem;
+    width: 24rem;
+    padding: 1.5rem;
+    margin: 0.5rem;
 }
 
 button:focus {
     outline: 0;
+}
+
+p {
+    margin: 0;
+    padding: 3rem;
 }
 
 .hidden {
@@ -43,7 +53,7 @@ button:focus {
     background-color: #fae9c0;
     color: black;
     text-align: left;
-    padding-left: 1em;
+    padding-left: 1rem;
 }
 
 .ans_group button:hover {
@@ -54,7 +64,7 @@ button:focus {
     animation: shake 0.5s;
 }
 
-.blur-filter > *:not(#retry_menu) {
+.blur-filter>*:not(#retry_menu) {
     filter: blur(5px);
 }
 
@@ -65,9 +75,7 @@ button:focus {
     transform: translate(-50%, -50%);
 }
 
-#game {
-
-}
+#game {}
 
 #start_btn {
     background-color: #007ede;
@@ -103,7 +111,7 @@ button:focus {
 }
 
 #question {
-    font-size: 4em;
+    font-size: 4rem;
     text-align: center;
 }
 
@@ -111,14 +119,13 @@ button:focus {
     display: block;
 }
 
-#answers_block {
-
-}
+#answers_block {}
 
 #retry_menu {
-    width: 200px;
-    height: 200px;
+    width: 50vh;
+    height: 50vh;
     margin: 0;
+    font-size: 2rem;
     background-color: grey;
     border-radius: 22px;
     z-index: 1;
@@ -135,12 +142,13 @@ button:focus {
     background-color: black;
     opacity: 0;
     transition: opacity 0.5s ease-out;
-    z-index: -1; /* changing this to 0 will make the start menu unclickable */
+    z-index: -1;
+    /* changing this to 0 will make the start menu unclickable */
 }
 
 #overlay-filter.show {
     opacity: 0.5 !important;
-    z-index: 0 !important; 
+    z-index: 0 !important;
 }
 
 @keyframes shake {
@@ -158,5 +166,29 @@ button:focus {
 
     40%,60% {
         transform: translate(1px, -1px) rotate(1deg);
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 12px;
+    }
+
+    button {
+        width: 100vw;
+        margin: 0;
+    }
+}
+
+@media (min-width: 769px) {
+    html {
+        font-size: calc(100vw / 60);
+    }
+}
+
+@media (min-width: 1281px) {
+    html {
+        font-size: calc(100vh / 40);
+        ;
     }
 }
