@@ -1,5 +1,3 @@
-console.log("Loading...")
-
 var question = document.getElementById("question");
 var obj; // = questions[index]
 var index; // the question's number
@@ -134,12 +132,15 @@ function showMenu(wrongChoice, correctChoice) {
     var retryMenu = document.getElementById('retry_menu');
     retryMenu.className = "centered";
 
-    retryMenu.addEventListener("click", function () {
-        wrongChoice.className = "hover";
-        correctChoice.className = "hover";
-        retryMenu.className = "hidden";
-        resetGame();
-    });
+    setTimeout(function() {
+        retryMenu.addEventListener("click", function toBeRemoved () {
+            wrongChoice.className = "hover";
+            correctChoice.className = "hover";
+            retryMenu.className = "hidden";
+            retryMenu.removeEventListener("click", toBeRemoved);
+            resetGame();
+        });
+    }, 500);
 }
 
 function resetGame() {
