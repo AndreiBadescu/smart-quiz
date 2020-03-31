@@ -141,8 +141,10 @@ function genPerm(arr, len) {
         arr.push(i);
     }
     for (let i = len - 1; i >= 0; --i) {
-        /// Math.random() will generate a number between [0,1)
+        // Math.random() will generate a number between [0,1)
+        // and this wil generate a number between [0, i+1)
         let rand = Math.floor(Math.random() * (i + 1));
+        // swapping arr[i] and arr[rand]
         [arr[i], arr[rand]] = [arr[rand], arr[i]];
     }
 }
@@ -158,14 +160,15 @@ function playerGuess(index) {
 
         // preloading next image
         var preloadNextImg = function() {
-            preloadedImg.src = "img/" + qPerm[index] + ".jpg";
+            preloadedImg.src = "img/" + qPerm[index + 1] + ".jpg";
             // checking the file extension
             preloadedImg.onerror = function() {
                 // changing it to the good one
-                preloadedImg.src = "img/" + qPerm[index] + ".png";
+                preloadedImg.src = "img/" + qPerm[index + 1] + ".png";
             }
         }
-        preloadNextImg();
+        if (index + 1 < max)
+            preloadNextImg();
 
         // setting the question image
         var setImg = function() {
