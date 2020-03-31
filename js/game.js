@@ -149,6 +149,16 @@ function genPerm(arr, len) {
     }
 }
 
+// this function will preload an image for future use
+function preloadNextImg(index) {
+    preloadedImg.src = "img/" + index + ".jpg";
+    // checking the file extension
+    preloadedImg.onerror = function() {
+        // changing it to the good one
+        preloadedImg.src = "img/" + index + ".png";
+    }
+}
+
 // processing the player's answer
 function playerGuess(index) {
     Transition();
@@ -157,32 +167,12 @@ function playerGuess(index) {
         // displaying the question
         obj = questions[qPerm[index]];
         question.innerHTML = (1 + index) + ') ' + obj.question;
-
+        // changing the question image
+        questionImg.src = preloadedImg.src;
         // preloading next image
-        var preloadNextImg = function() {
-            preloadedImg.src = "img/" + qPerm[index + 1] + ".jpg";
-            // checking the file extension
-            preloadedImg.onerror = function() {
-                // changing it to the good one
-                preloadedImg.src = "img/" + qPerm[index + 1] + ".png";
-            }
+        if (index + 1 < max) {
+            preloadNextImg(qPerm[index + 1]);
         }
-        if (index + 1 < max)
-            preloadNextImg();
-
-        // setting the question image
-        var setImg = function() {
-            questionImg.src = "img/" + qPerm[index] + ".jpg";
-            // checking the file extension
-            questionImg.onerror = function() {
-                // changing it to the good one
-                questionImg.src = "img/" + qPerm[index] + ".png";
-                questionImg.onerror = function() {
-                    alert("ERROR: !THE IMAGE COULD NOT LOAD!")
-                }
-            }
-        }
-        setImg();
 
         // generating a random permutation of the answer options
         aPerm = []; // emptying the array !inside the genPerm function won't work!
@@ -295,6 +285,7 @@ function startGame() {
 
     qPerm = [];
     genPerm(qPerm, max);
+    preloadNextImg(qPerm[0]); // loading the first image
 
     startSound.play();
     playerGuess(index = 0);
