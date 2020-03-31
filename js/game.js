@@ -1,0 +1,301 @@
+console.log("Loading...")
+/*
+FBInstant.initializeAsync()
+    .then(function() {
+        var progress = 0;
+        var interval = setInterval(function() {
+            if (progress >= 100) {
+                clearInterval(interval);
+                FBInstant.startGameAsync().then(
+                    function() {
+                        console.log("Games has been started")
+                    }
+                )
+            }
+            FBInstant.setLoadingProgress(progress);
+            progress += 10;
+        }, 100)
+    });
+*/
+// Miscellaneous
+var question = document.getElementById("question");
+var questionImg = document.getElementById("question_img");
+var obj; // = questions[index]
+var index; // the question's number
+var max = questions.length;
+var numberOfOptions = 4;
+var choice = ['A', 'B', 'C', 'D'];
+var qPerm = [],
+    aPerm = []; // random permutation of questions and answers
+// WINDOWS + FILTERS
+var game = document.getElementById("game");
+var gameWindow = document.getElementsByTagName("body")[0];
+var greyFilter = document.getElementById("overlay-filter");
+var blurFilter = document.getElementById("blur-filter");
+// MENUS
+var startMenu = document.getElementById("home_menu");
+var retryMenu = document.getElementById("retry_menu");
+var settingsMenu = document.getElementById("settings_menu");
+var creditsMenu = document.getElementById("credits_menu")
+// BUTTONS
+var startBtn = document.getElementById("start_btn");
+var settingsBtn = document.getElementById("settings_btn");
+var creditsBtn = document.getElementById("credits_btn");
+var playagainBtn = document.getElementById("playagain_btn");
+var homeBtn = document.getElementById("home_btn");
+var option = [
+    document.getElementById("0"),
+    document.getElementById("1"),
+    document.getElementById("2"),
+    document.getElementById("3")
+];
+// SOUNDS
+var startSound = new Audio("audio/start.mp3");
+var clickMenuSound = new Audio("audio/clickMenu.mp3");
+var correctSound = new Audio("audio/correct.mp3");
+var wrongSound = new Audio("audio/wrong.mp3");
+
+// MAKING BUTTONS WORK
+startBtn.addEventListener("click", startGame);
+settingsBtn.addEventListener("click", goToSettings);
+creditsBtn.addEventListener("click", goToCredits);
+addListeners(option); // answer buttons
+// PRELOADING AUDIOS
+startSound.preload = "auto";
+clickMenuSound.preload = "auto";
+correctSound.preload = "auto";
+wrongSound.preload = "auto";
+
+// hidding an element
+function hide(element) {
+    if (!element.classList.contains("hidden"))
+        element.classList.add("hidden");
+}
+
+// showing an element
+function show(element) {
+    if (element.classList.contains("hidden"))
+        element.classList.remove("hidden");
+}
+
+function checkAns(event) {
+    // checking the option the player chose
+    if (aPerm[event.target.id] == obj.key) {
+        // CORRECT GUESS
+        event.target.className = "correct";
+        correctSound.play();
+
+        // next step: going to next question
+        function next(element) {
+            element.className = "hover";
+            playerGuess(++index);
+        }
+        setTimeout(next, 500, event.target); //
+    } 
+    else {
+        // WRONG GUESS
+        // looking for the correct answer
+        for (let i = 0; i < numberOfOptions; ++i) {
+            if (aPerm[i] == obj.key) {
+                var ans = i;
+                break;
+            }
+        }
+        // showing the correct answer and highlighting the wrong one
+        option[ans].className = "correct";
+        event.target.className = "wrong";
+
+        // wrong answer effects
+        wrongSound.play();
+        game.className = "vibration";
+
+        // next step: showing the Try Again Menu
+        function next(wrongChoice, correctChoice) {
+            game.className = "";
+            showMenu(wrongChoice, correctChoice);
+        }
+        setTimeout(next, 800, event.target, option[ans]);
+    }
+}
+
+// adding click event listener for every answer option available in the game
+function addListeners(option) {
+    for (let i = 0; i < option.length; ++i) {
+        option[i].addEventListener("click", checkAns);
+    }
+}
+
+// smooth trasnsition for questions (not for any filter)
+function Transition() {
+    // making the game objects invsibile without a transition
+    // a transition is needed only when changing the opacity from 0 to 1
+    game.style.transition = "";
+    game.style.opacity = 0;
+
+    // changing the transition without a timeout won't apply
+    setTimeout(function() {
+        game.style.transition = "opacity 0.3s linear";
+        game.style.opacity = 1;
+    }, 200);
+}
+
+// here you can use all the filters
+function useFilters() {
+    greyFilter.className = "show" // apply grayscale filter
+    blurFilter.className = "show" // apply blur(5px) filter
+}
+
+// here you can hide all the filters
+function hideFilters() {
+    greyFilter.className = "hidden" // hide grayscale filter
+    blurFilter.className = "hidden" // hide blur(5px) filter
+}
+
+// generating random permutation of an array (questions/answers)
+function genPerm(arr, len) {
+    // THE ARRAY MUST BE EMPTY !DOING THIS INSIDE THE FUNCTION WON'T WORK!
+    for (let i = 0; i < len; ++i) {
+        arr.push(i);
+    }
+    for (let i = len - 1; i >= 0; --i) {
+        /// Math.random() will generate a number between [0,1)
+        let rand = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[rand]] = [arr[rand], arr[i]];
+    }
+}
+
+// processing the player's answer
+function playerGuess(index) {
+    Transition();
+    // Checking if there are any questions left to display
+    if (index < max) {
+        // displaying the question
+        obj = questions[qPerm[index]];
+        question.innerHTML = (1 + index) + ') ' + obj.question;
+
+        // setting the question image
+        var setImage = function() {
+            questionImg.src = "img/" + qPerm[index] + ".jpg";
+            // checking the file extension
+            questionImg.onerror = function() {
+                // changing it to the good one
+                questionImg.src = "img/" + qPerm[index] + ".png";
+            }
+        }
+        setImage();
+
+        // generating a random permutation of the answer options
+        aPerm = []; // emptying the array !inside the genPerm function won't work!
+        genPerm(aPerm, numberOfOptions);
+
+        for (let i = 0; i < numberOfOptions; ++i) {
+            option[i].innerHTML = choice[i] + '. ' + obj.answers[aPerm[i]];
+            option[i].style.width = "";
+            option[i].style.padding = "0";
+        }
+
+        // making the buttons have the best possible padding
+        var dynamicPadding = function() {
+            let minPadding = 10000,
+                doc_40vw   = 4 * document.documentElement.clientWidth / 10,
+                doc_90vw   = 9 * document.documentElement.clientWidth / 10;
+            for (let i = 0; i < numberOfOptions; ++i) {
+                if (document.documentElement.clientWidth > 768)
+                    minPadding = Math.min(minPadding, doc_40vw - option[i].clientWidth);
+                else
+                    minPadding = Math.min(minPadding, doc_90vw - option[i].clientWidth);
+            }
+            minPadding /= 2;
+            for (let i = 0; i < numberOfOptions; ++i) {
+                // in this case the media screen styling will apply
+                if (document.documentElement.clientWidth > 768)
+                    option[i].style.width = "40vw";
+                else
+                    option[i].style.width = "90vw"; 
+                option[i].style.padding = "1.4rem"       
+                // this is the dynamic padding
+                option[i].style.paddingLeft = minPadding + "px";
+            }
+        }
+        // calling the function
+        dynamicPadding();
+    } 
+    else if (index == max) {
+        alert("Congrats! You've finished the game!");
+        resetGame();
+    }
+}
+
+function showMenu(wrongChoice, correctChoice) {
+    useFilters();
+    show(retryMenu);
+
+    var toBeRemoved = function(event) {
+        // removing the background colors
+        wrongChoice.className = "hover";
+        correctChoice.className = "hover";
+
+        hide(retryMenu);
+
+        playagainBtn.removeEventListener("click", toBeRemoved);
+        homeBtn.removeEventListener("click", toBeRemoved);
+
+        resetGame();
+        if (event.target.id == "playagain_btn") {
+            startGame();
+        } 
+        else {
+            clickMenuSound.play();
+        }
+    }
+
+    playagainBtn.addEventListener("click", toBeRemoved);
+    homeBtn.addEventListener("click", toBeRemoved);
+}
+
+function goToSettings() {
+    clickMenuSound.play();
+    hide(startMenu);
+    show(settingsMenu);
+
+    var goBackBtn = document.getElementsByClassName("go_back_btn")[0];
+    goBackBtn.addEventListener("click", function() {
+        clickMenuSound.play();
+        hide(settingsMenu);
+        show(startMenu);
+    });
+}
+
+function goToCredits() {
+    clickMenuSound.play();
+    hide(startMenu);
+    show(creditsMenu);
+
+    var goBackBtn = document.getElementsByClassName("go_back_btn")[1];
+    goBackBtn.addEventListener("click", function() {
+        clickMenuSound.play();
+        hide(creditsMenu);
+        show(startMenu);
+    });
+}
+
+function resetGame() {
+    gameWindow.className = "";
+    hideFilters(); //stops the filters from using the transition when going back to 0
+    Transition();
+    show(startMenu);
+    hide(game);
+}
+
+function startGame() {
+    show(greyFilter); // filter is now using the transiton property
+
+    hide(startMenu);
+    show(game);
+
+    qPerm = [];
+    genPerm(qPerm, max);
+
+    startSound.play();
+    playerGuess(index = 0);
+}
