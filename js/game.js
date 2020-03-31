@@ -1,4 +1,22 @@
 console.log("Loading...")
+/*
+FBInstant.initializeAsync()
+    .then(function() {
+        var progress = 0;
+        var interval = setInterval(function() {
+            if (progress >= 100) {
+                clearInterval(interval);
+                FBInstant.startGameAsync().then(
+                    function() {
+                        console.log("Games has been started")
+                    }
+                )
+            }
+            FBInstant.setLoadingProgress(progress);
+            progress += 10;
+        }, 100)
+    });
+*/
 // Miscellaneous
 var question = document.getElementById("question");
 var questionImg = document.getElementById("question_img");
@@ -162,6 +180,9 @@ function playerGuess(index) {
             questionImg.onerror = function() {
                 // changing it to the good one
                 questionImg.src = "img/" + qPerm[index] + ".png";
+                questionImg.onerror = function() {
+                    alert("ERROR: !THE IMAGE COULD NOT LOAD!")
+                }
             }
         }
         setImage();
