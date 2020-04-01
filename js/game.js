@@ -1,4 +1,22 @@
 console.log("Loading...")
+/*
+FBInstant.initializeAsync()
+    .then(function() {
+        var progress = 0;
+        var interval = setInterval(function() {
+            if (progress >= 100) {
+                clearInterval(interval);
+                FBInstant.startGameAsync().then(
+                    function() {
+                        console.log("Games has been started")
+                    }
+                )
+            }
+            FBInstant.setLoadingProgress(progress);
+            progress += 10;
+        }, 100)
+    });
+*/
 // Miscellaneous
 var question = document.getElementById("question");
 var questionImg = document.getElementById("question_img");
@@ -74,8 +92,7 @@ function checkAns(event) {
             playerGuess(++index);
         }
         setTimeout(next, 500, event.target); //
-    } 
-    else {
+    } else {
         // WRONG GUESS
         // looking for the correct answer
         for (let i = 0; i < numberOfOptions; ++i) {
@@ -149,17 +166,6 @@ function genPerm(arr, len) {
     }
 }
 
-// this function will preload an image for future use
-function preloadNextImg(index) {
-    // checking the file extension
-    preloadedImg.onerror = function() {
-        // changing it to the good one
-        preloadedImg.src = "img/" + index + ".png";
-    };
-    // trying the JPEG extension
-    preloadedImg.src = "img/" + index + ".jpg";
-}
-
 // processing the player's answer
 function playerGuess(index) {
     Transition();
@@ -170,9 +176,9 @@ function playerGuess(index) {
         question.innerHTML = (1 + index) + ') ' + obj.question;
         // changing the question image
         questionImg.src = preloadedImg.src;
-        // preloading next image
+        // preload next image
         if (index + 1 < max) {
-            preloadNextImg(qPerm[index + 1]);
+            preloadedImg.src = "img/" + qPerm[index + 1] + ".jpg";
         }
 
         // generating a random permutation of the answer options
@@ -192,9 +198,9 @@ function playerGuess(index) {
         var dynamicPadding = function() {
             let minPadding = 100000,
                 // 40% width of the viewport
-                doc_40vw   = 4 * document.documentElement.clientWidth / 10,
+                doc_40vw = 4 * document.documentElement.clientWidth / 10,
                 // 90% width of the viewport
-                doc_90vw   = 9 * document.documentElement.clientWidth / 10;
+                doc_90vw = 9 * document.documentElement.clientWidth / 10;
 
             for (let i = 0; i < numberOfOptions; ++i) {
                 // checking for small screens
@@ -213,9 +219,9 @@ function playerGuess(index) {
                 if (document.documentElement.clientWidth > 768)
                     option[i].style.width = "40vw";
                 else
-                    option[i].style.width = "90vw"; 
+                    option[i].style.width = "90vw";
                 // top, bottom and right padding
-                option[i].style.padding = "1.4rem"       
+                option[i].style.padding = "1.4rem"
                 // this is the dynamic padding
                 option[i].style.paddingLeft = minPadding + "px";
             }
@@ -298,7 +304,7 @@ function startGame() {
 
     qPerm = [];
     genPerm(qPerm, max);
-    preloadNextImg(qPerm[0]); // loading the first image
+    preloadedImg.src = "img/" + qPerm[0] + ".jpg";; // loading the first image
 
     startSound.play();
     playerGuess(index = 0);
