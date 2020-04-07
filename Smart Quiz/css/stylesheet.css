@@ -1,0 +1,348 @@
+html {
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: linear-gradient(90deg, rgba(251, 151, 8, 1) 0%, rgba(252, 177, 48, 1) 41%, rgba(0, 151, 181, 1) 100%);
+}
+
+button {
+    border: 0.25rem solid black;
+    border-radius: 1.375rem;
+    font-size: 3rem;
+    padding: 0;
+}
+
+button:focus {
+    outline: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.correct {
+    transition: background 0.25s ease-in-out;
+    background-color: #00c206 !important;
+}
+
+.wrong {
+    transition: background 0.2s ease-in-out;
+    background-color: #d90000 !important;
+}
+
+.ans_group {
+    /* centers the buttons */
+    text-align: center;
+}
+
+.ans_group button {
+    background-color: #fae9c0;
+    color: black;
+    text-align: left;
+}
+
+.vibration {
+    animation: shake 0.5s;
+}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.go_back_btn {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    width: 30rem;
+    padding: 1.4rem;
+}
+
+.max-width {
+    width: 80%;
+    margin: auto;
+}
+
+#game {
+    margin: 0;
+}
+
+#info_bar {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: block;
+    height: 5vh;
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+#score {
+    color: #d1d1d1;
+    position: absolute;
+    font-size: 3.65vh;
+    float: left;
+    left: calc(10vw - 0.4rem);
+}
+
+#time_left {
+    font-size: 3.65vh;
+    display: flex;
+    justify-content: center;
+}
+
+#exit_btn {
+    opacity: 0.85;
+}
+
+#exit_btn:before, #exit_btn:after {
+    position: absolute;
+    top: 0.5vh;
+    right: calc(10vw + 2vh - 0.7rem);
+    content: '';
+    width: 0.3rem;
+    height: 4vh;
+    background-color: red;
+}
+
+#exit_btn:before {
+  transform: rotate(45deg);
+}
+
+#exit_btn:after {
+  transform: rotate(-45deg);
+}
+
+#start_btn {
+    background-color: #007ede;
+    color: #11ff00;
+    display: block;
+    margin: 0 auto;
+}
+
+#settings_btn {
+    background-color: #007ede;
+    color: #11ff00;
+    display: block;
+    margin: 5% auto; /* 5% because settings btn is the middle one*/
+}
+
+#credits {
+    display: block;
+    text-align: center;
+    font-size: 3rem;
+    color: #003463;
+}
+
+#credits_btn {
+    background-color: #007ede;
+    color: #11ff00;
+    display: block;
+    margin: 0 auto;
+}
+
+#question {
+    font-size: 3.5rem;
+    text-align: center;
+    padding: 5vh 3rem;
+}
+
+#question_block {
+    display: block;
+    margin: 0;
+}
+
+#question_img {
+    display: block;
+    margin: 0 auto 1.5rem;
+    width: 80%;
+    max-height: 40vh;
+    border: 0.4rem solid black;
+    border-radius: 1.25rem;
+}
+/*
+#answers_block {
+    width: 80%;
+    margin: 0 auto;
+}
+*/
+#answers_block button {
+    margin: 0.5rem;
+}
+
+#home_menu button {
+    width: 30rem;
+    padding: 1.4rem;
+    font-size: 4rem;
+}
+
+#retry_menu {
+    text-align: center;
+    background-color: lightblue;
+    border: 0.25rem solid black;
+    border-radius: 1.375rem;
+    z-index: 1;
+}
+
+#retry_menu button {
+    display: block;
+    width: 40rem;
+    padding: 1.4rem;
+    margin: 0.5em;
+    font-size: 4rem;
+}
+
+#playagain_btn {}
+
+#home_btn {}
+
+#overlay-filter {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    /* changing this to 0 will make the start menu unclickable */
+    z-index: -1;
+}
+
+#overlay-filter.show {
+    opacity: 0.5;
+    z-index: 0;
+}
+
+#blur-filter {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: blur(0);
+    transition: backdrop-filter 0.5s ease-in;
+    /* changing this to 0 will make the start menu unclickable */
+    z-index: -1;
+}
+
+#blur-filter.show {
+    backdrop-filter: blur(5px);
+    z-index: 0;
+}
+
+@keyframes shake {
+
+    10%,90% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+    }
+
+    20%,80% {
+        transform: translate(-3px, 0px) rotate(1deg);
+    }
+
+    30%,50%,70% {
+        transform: translate(3px, 2px) rotate(0deg);
+    }
+
+    40%,60% {
+        transform: translate(1px, -1px) rotate(1deg);
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .go_back_btn:hover {
+        background-color: grey;
+    }
+
+    .ans_group button:hover {
+        background-color: #d9caa7;
+    }
+
+    #score:hover {
+        color: white;
+    }
+
+    #exit_btn {
+        opacity: 0.7;
+    }
+
+    #exit_btn:hover {
+        opacity: 1;
+    }
+
+    #start_btn:hover {
+        background-color: #0067b5;
+    }
+
+    #settings_btn:hover {
+        background-color: #0067b5;
+    }
+
+    #credits_btn:hover {
+        background-color: #0067b5;
+    }
+
+    #exit_btn:hover {
+        color: pink;
+    }
+
+    #playagain_btn:hover {
+        background-color: #bfbfbf;
+    }
+
+    #home_btn:hover {
+        background-color: #bfbfbf;
+    }
+}
+
+@media (max-aspect-ratio: 1/1) {
+    html {
+        font-size: calc(100vw / 60);
+    }
+}
+
+@media (min-aspect-ratio: 1/1){
+    html {
+        font-size: calc(100vh / 60);
+    }
+}
+
+@media (max-width: 768px) {
+    #question {
+        font-size: 3.1rem;
+    }
+
+    #answers_block button {
+        margin: 0.25rem 0;
+    }
+}
+
+@media (min-width: 769px) {
+    .ans_group button {
+        text-align: left;
+    }
+}
+/*
+@media (min-width: 1281px) {
+    #game, #exit_btn {
+        margin: 0 calc(100vw / 20);
+    }
+}
+*/
