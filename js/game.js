@@ -299,6 +299,7 @@ function showMenu(wrongChoice, correctChoice) {
     clearInterval(stopWatch);
     useFilters();
     show(retryMenu);
+    document.getElementById("final_score").innerHTML = index;
 
     var toBeRemoved = function(event) {
         // removing the background colors
