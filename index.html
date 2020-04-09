@@ -20,6 +20,14 @@
 </head>
 
 <body class="">
+    <!-- BlACK BAR -->
+    <div style="height: 6vh"></div>
+    <div id="black_bar">
+        <span id="hour"></span>
+        <p>SMART QUIZ</p>
+    </div>
+    <!-- END OF BLACK BAR -->
+
     <!-- HOME MENU -->
     <div id="home_menu" class="centered">
         <button id="start_btn">PLAY</button>
@@ -80,7 +88,9 @@
 
     <!-- RETRY MENU -->
     <div id="retry_menu" class="centered hidden">
-        <p style="font-size:3.5rem">Final score: <span id="final_score"></span></p>
+        <p id="lose" class="hidden">YOU HAVE LOST!</p>
+        <p id="win" class="hidden">YOU'VE FINISHED THE GAME!</p>
+        <p>Final score: <span id="final_score"></span></p>
         <button id="playagain_btn">PLAY AGAIN</button>
         <button id="home_btn">HOME</button>
     </div>

@@ -18,12 +18,8 @@ FBInstant.initializeAsync()
     });
 */
 // Miscellaneous
-var score = document.getElementById("score");
-var timeDisplayed = document.getElementById("time_left");
 var timeLeft;
 var stopWatch;
-var question = document.getElementById("question");
-var questionImg = document.getElementById("question_img");
 var preloadedImg = new Image();
 var obj; // = questions[index]
 var index; // the question's number
@@ -37,6 +33,13 @@ var game = document.getElementById("game");
 var gameWindow = document.getElementsByTagName("body")[0];
 var greyFilter = document.getElementById("overlay-filter");
 var blurFilter = document.getElementById("blur-filter");
+// TEXTS
+var clock = document.getElementById("hour");
+var score = document.getElementById("score");
+var timeDisplayed = document.getElementById("time_left");
+var question = document.getElementById("question");
+var questionImg = document.getElementById("question_img");
+var finalTxt = [document.getElementById("lose"), document.getElementById("win")];
 // MENUS
 var startMenu = document.getElementById("home_menu");
 var retryMenu = document.getElementById("retry_menu");
@@ -67,7 +70,7 @@ var currentPlayer;
 startBtn.addEventListener("click", startGame);
 settingsBtn.addEventListener("click", goToSettings);
 creditsBtn.addEventListener("click", goToCredits);
-exitBtn.addEventListener("click", function(){
+exitBtn.addEventListener("click", function() {
     playAudio(clickMenuSound);
     clearInterval(stopWatch);
     resetGame();
@@ -79,6 +82,19 @@ clickMenuSound.preload = "auto";
 correctSound.preload = "auto";
 wrongSound.preload = "auto";
 clocktickSound.preload = "auto";
+
+// display clock on left of the black bar
+window.onload = startTime();
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    if (m < 10) { 
+        m = "0" + m; 
+    };
+    clock.innerHTML = h + ":" + m;
+    var t = setTimeout(startTime, 500);
+}
 
 // hidding an element
 function hide(element) {
@@ -234,13 +250,12 @@ function countdown() {
         game.className = "vibration";
         showMenu();
         clearInterval(stopWatch);
-    }
-    else if (timeLeft > 0) 
-    {
+    } 
+    else if (timeLeft > 0) {
         if (timeLeft > 10)
             timeDisplayed.style.color = "#09d402"; // green
         else if (timeLeft > 5)
-                timeDisplayed.style.color = "orange";
+            timeDisplayed.style.color = "orange";
         else {
             clocktickSound.play();
             if (timeLeft > 3)
@@ -290,8 +305,9 @@ function playerGuess(index) {
         dynamicPadding();
     } 
     else if (index == max) {
-        alert("Congrats! You've finished the game!");
-        resetGame();
+        showMenu();
+        hide(finalTxt[0]);
+        show(finalTxt[1]);
     }
 }
 
@@ -299,6 +315,7 @@ function showMenu(wrongChoice, correctChoice) {
     clearInterval(stopWatch);
     useFilters();
     show(retryMenu);
+    show(finalTxt[0]);
     document.getElementById("final_score").innerHTML = index;
 
     var toBeRemoved = function(event) {
@@ -361,6 +378,7 @@ function resetGame() {
     Transition();
     show(startMenu);
     hide(game);
+    hide(finalTxt[0]), hide(finalTxt[1]);
 }
 
 function startGame() {
